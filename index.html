@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Wifi setup</title>
+    <style>
+        body {
+            background-color: #dadada;
+            font-family: Verdana, sans-serif;
+        }
+
+        .cabecera {
+            padding: 5px 0px;
+            border-radius: 5px;
+            background-color: rgb(23, 33, 119);
+            text-align: center;
+            color: #fff;
+            margin: 5px auto;
+        }
+
+        .cabecera h1 {
+            font-size: 20px;
+            margin: 0px;
+        }
+
+        .cabecera h2 {
+            font-size: 16px;
+            margin: 0px;
+        }
+
+        .contenedor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px 5px;
+            border-radius: 10px;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .formulario {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .entrada {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .entrada label {
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .entrada input[type="text"],
+        .entrada input[type="password"] {
+            height: 20px;
+            flex: 2;
+            padding: 5px;
+            border: 1px solid #c7c7c7;
+            border-radius: 5px;
+        }
+
+        .redes-wifi {
+            margin-bottom: 23px;
+        }
+
+        .redes-wifi ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .redes-wifi li {
+            cursor: pointer;
+            padding: 5px;
+            background: #f1f1f1;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #toggle-password {
+            width: 20px;
+            padding: 0px;
+        }
+
+        .contenedor-footer {
+            padding: 5px 0px;
+            border-radius: 5px;
+            background-color: rgb(23, 33, 119);
+            text-align: center;
+            color: #fff;
+            margin: 5px auto;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+        }
+
+        #guardar-button {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #guardar-button:hover {
+            background-color: rgb(116, 188, 212);
+            color: black;
+        }
+
+        .volver-button {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .volver-button:hover {
+            background-color: #777;
+        }
+
+        .derechos {
+            font-size: 9px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-cabecera">
+        <header class="cabecera">
+            <h1>WiFi Manager</h1>
+            <h2>Ayresnet</h2>
+        </header>
+    </div>
+
+    <div class="contenedor">
+        <form method="POST" action="/save">
+            <div class="formulario">
+                <div class="redes-wifi">
+                    <label for="wifi-list">Redes WiFi Disponibles:</label>
+                    <ul id="wifi-list">
+                        <!-- Aquí se agregarán las redes WiFi -->
+                    </ul>
+                </div>
+                <div class="entrada">
+                    <label for="wifi-ssif">SSID:</label>
+                    <input type="text" name="ssid" id="wifi-ssif">
+                </div>
+                <div class="entrada">
+                    <label for="wifi-password">PASSWORD:</label>
+                    <input type="password" name="password" id="wifi-password">
+                </div>
+                <div class="entrada">
+                    <input type="checkbox" id="show-password">
+                    <label for="show-password">Mostrar contraseña</label>
+                </div>
+                <input type="submit" value="Guardar" id="guardar-button">
+            </div>
+        </form>
+    </div>
+
+    <div class="contenedor-footer">
+        <footer class="footer">
+            <p>(c) 2024 - Daniel Salgado - v1.1.0</p>
+        </footer>
+    </div>
+
+    <p class="derechos">
+        El contenido de esta página web está protegido por derechos de autor. Solo se permite su uso con el software de gestión Wi-Fi desarrollado por Daniel Salgado y Ayresnet.
+    </p>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var redesWifi = document.getElementById('wifi-list');
+
+        // Obtener redes WiFi desde el ESP
+        fetch('/scan')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(red => {
+                    let li = document.createElement('li');
+                    li.textContent = red.ssid + (red.secure ? " 🔒" : " 🔓") + " - " + red.rssi + " dBm";
+                    redesWifi.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error('Error obteniendo redes WiFi:', error);
+            });
+
+        // Seleccionar red al hacer clic
+        redesWifi.addEventListener('click', function (event) {
+            if (event.target.tagName === 'LI') {
+                document.getElementById('wifi-ssif').value = event.target.textContent.split(' - ')[0].replace(" 🔒", "").replace(" 🔓", "");
+            }
+        });
+
+        // Mostrar/ocultar contraseña
+        var showPasswordCheckbox = document.getElementById('show-password');
+        var passwordInput = document.getElementById('wifi-password');
+        
+        showPasswordCheckbox.addEventListener('change', function () {
+            passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
+        });
+    });
+    </script>
+</body>
+</html>
