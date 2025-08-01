@@ -13,7 +13,8 @@
 ├── data/
 │   └── wifimanager/
 │       ├── index.html
-│       └── styles.css
+│       ├── success.html
+│       └── error.html
 ├── src/
 │   └── main.cpp
 ├── platformio.ini
@@ -23,7 +24,7 @@
 ## 🚀 Características principales
 
 - Escaneo y conexión automática a redes conocidas  
-- Portal cautivo para configuración manual mediante HTML  
+- Portal cautivo con páginas de respuesta personalizadas (`success.html`, `error.html`)  
 - Integración sencilla en proyectos con PlatformIO  
 - Código modular y fácil de mantener
 
@@ -31,7 +32,7 @@
 
 1. **Instalar dependencias**: Asegurate de tener PlatformIO y ESP32 configurado.
 2. **Agregar la librería**: Copiá `wifimanager.cpp` y `wifimanager.h` dentro de `lib/wifimanager/`.
-3. **Interfaz web**: Colocá los archivos HTML y CSS en `data/wifimanager/`.
+3. **Interfaz web**: Colocá los archivos `index.html`, `success.html` y `error.html` en `data/wifimanager/`.
 4. **Cargar archivos a la SPIFFS**:
 
    ```bash
