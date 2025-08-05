@@ -110,19 +110,51 @@
 
 ```cpp
 #include <WifiManager.h>
+#include <LittleFS.h>
+#include <WiFi.h>
 
 WifiManager wifiManager;
 
 void setup() {
   Serial.begin(115200);
+  delay(200);
+
+  // Initialize LittleFS (required to read wifi.json)
+  if (!LittleFS.begin()) {
+    Serial.println("❌ Failed to mount LittleFS");
+    return;
+  }
+
+  // Set the path where the captive portal HTML files are stored
   wifiManager.setHtmlPathPrefix("/wifimanager/");
-  wifiManager.autoConnect("AyresIoT-Setup");
-  Serial.println("✅ Connected to WiFi!");
+
+  // Start WiFiManager (loads configuration from wifi.json if it exists)
+  wifiManager.begin();
+
+  // If wifi.json doesn't exist, launch the captive portal and halt execution
+  if (!LittleFS.exists("/wifi.json")) {
+    Serial.println("⚠️ wifi.json not found → starting captive portal");
+    wifiManager.run();  // AP mode – stays here until user configures
+    return;
+  }
+
+  // Attempt to connect using stored credentials
+  wifiManager.run();
+
+  // Check if the connection was successful
+  if (!wifiManager.isConnected()) {
+    Serial.println("❌ Failed to connect to WiFi");
+    return;
+  }
+
+  Serial.print("✅ Connected to: ");
+  Serial.println(WiFi.SSID());
 }
 
 void loop() {
-  // Your main logic here
+  wifiManager.update();  // keeps connection alive and handles events
 }
+
 ```
 
 ---
