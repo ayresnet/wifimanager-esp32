@@ -108,19 +108,51 @@
 
 ```cpp
 #include <WifiManager.h>
+#include <LittleFS.h>
+#include <WiFi.h>
 
 WifiManager wifiManager;
 
 void setup() {
   Serial.begin(115200);
+  delay(200);
+
+  // Iniciar LittleFS (requerido para leer wifi.json)
+  if (!LittleFS.begin()) {
+    Serial.println("❌ Error al montar LittleFS");
+    return;
+  }
+
+  // Configurar ruta donde están los archivos HTML del portal cautivo
   wifiManager.setHtmlPathPrefix("/wifimanager/");
-  wifiManager.autoConnect("AyresIoT-Setup");
-  Serial.println("✅ Conectado a WiFi!");
+
+  // Iniciar WiFiManager (carga configuración desde wifi.json si existe)
+  wifiManager.begin();
+
+  // Si no hay archivo wifi.json, lanzar portal cautivo y detener ejecución
+  if (!LittleFS.exists("/wifi.json")) {
+    Serial.println("⚠️ No se encontró wifi.json → iniciando portal cautivo");
+    wifiManager.run();  // Modo AP (se queda esperando que el usuario configure)
+    return;
+  }
+
+  // Conectar a la red WiFi guardada
+  wifiManager.run();
+
+  // Verificar si la conexión fue exitosa
+  if (!wifiManager.isConnected()) {
+    Serial.println("❌ No se pudo conectar a WiFi");
+    return;
+  }
+
+  Serial.print("✅ Conectado a: ");
+  Serial.println(WiFi.SSID());
 }
 
 void loop() {
-  // Tu lógica principal
+  wifiManager.update();  // mantiene viva la conexión y escucha eventos
 }
+
 ```
 
 ---
