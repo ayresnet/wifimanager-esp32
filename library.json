@@ -1,0 +1,42 @@
+{
+  "name": "AyresWiFiManager",
+  "version": "1.0.0",
+  "description": "WiFi Manager con portal cautivo para ESP32. Permite configurar redes WiFi y parámetros personalizados desde una interfaz web almacenada en LittleFS. Compatible con PlatformIO y Arduino IDE.",
+  "keywords": [
+    "wifi",
+    "esp32",
+    "manager",
+    "portal",
+    "cautivo",
+    "ayresnet",
+    "lfs",
+    "littlefs",
+    "autoconnect"
+  ],
+  "authors": [
+    {
+      "name": "Daniel Cristian Salgado",
+      "email": "dcsalg@outlook.com",
+      "url": "https://ayresnet.com",
+      "maintainer": true
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ayresnet/wifimanager-esp32"
+  },
+  "frameworks": ["arduino"],
+  "platforms": ["espressif32"],
+  "license": "MIT",
+  "examples": [
+    "examples/ejemplo_basico",
+    "examples/ejemplo_platformio"
+  ],
+  "build": {
+    "srcFilter": [
+      "+<src/>",
+      "+<*.cpp>",
+      "+<*.h>"
+    ]
+  }
+}
