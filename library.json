@@ -1,6 +1,6 @@
 {
   "name": "AyresWiFiManager",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "WiFi Manager con portal cautivo para ESP32. Permite configurar redes WiFi y parámetros personalizados desde una interfaz web almacenada en LittleFS. Compatible con PlatformIO y Arduino IDE.",
   "keywords": [
     "wifi",
