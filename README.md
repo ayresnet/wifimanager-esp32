@@ -1,8 +1,8 @@
 # WiFiManager ESP32
 
-**WiFiManager ESP32** es una librería para gestión automática de WiFi en dispositivos ESP32, diseñada para facilitar la conexión y configuración en entornos IoT. De uso libre y orientado a quienes buscan simplicidad y autonomía en sus proyectos.
+**WiFiManager ESP32** is a library for automatic WiFi management on ESP32 devices, designed to simplify connectivity and configuration in IoT environments. Open-source and focused on providing simplicity and autonomy for your projects.
 
-## 📂 Estructura del proyecto
+## 📂 Project Structure
 
 ```plaintext
 .
@@ -21,44 +21,50 @@
 └── README.md
 ```
 
-## 🚀 Características principales
+## 🚀 Main Features
 
-- Escaneo y conexión automática a redes conocidas  
-- Portal cautivo con páginas de respuesta personalizadas (`success.html`, `error.html`)  
-- Integración sencilla en proyectos con PlatformIO  
-- Código modular y fácil de mantener
+- Scans and connects automatically to known networks  
+- Captive portal with custom response pages (`success.html`, `error.html`)  
+- Easy integration with PlatformIO-based projects  
+- Modular and maintainable code
 
-## 🛠 Instrucciones de uso
+## 🛠 How to Use
 
-1. **Instalar dependencias**: Asegurate de tener PlatformIO y ESP32 configurado.
-2. **Agregar la librería**: Copiá `wifimanager.cpp` y `wifimanager.h` dentro de `lib/wifimanager/`.
-3. **Interfaz web**: Colocá los archivos `index.html`, `success.html` y `error.html` en `data/wifimanager/`.
-4. **Cargar archivos a la SPIFFS**:
+1. **Install dependencies**: Make sure you have PlatformIO and ESP32 set up.
+2. **Add the library**: Copy `wifimanager.cpp` and `wifimanager.h` into `lib/wifimanager/`.
+3. **Web interface**: Place the `index.html`, `success.html`, and `error.html` files inside `data/wifimanager/`.
+4. **Upload files to SPIFFS**:
 
    ```bash
    pio run --target uploadfs
    ```
 
-5. **Compilar y flashear el código**:
+5. **Compile and flash the code**:
 
    ```bash
    pio run --target upload
    ```
 
-6. **Monitoreo en serie**:
+6. **Serial monitor**:
 
    ```bash
    pio device monitor
    ```
 
-## 📄 Licencia
+## 📄 License
 
-Este proyecto se publica bajo licencia MIT — libertad total para copiar, modificar y distribuir, incluso comercialmente.
+This project is released under the MIT License — full freedom to copy, modify, and distribute, even commercially.
 
-## 🤝 Contribuciones
+## 🤝 Contributions
 
-¡Bienvenidas! Si querés sumar mejoras, ejemplos o documentación, podés abrir un *pull request* o dejar un *issue*.
+Contributions are welcome! If you'd like to add improvements, examples, or documentation, feel free to open a pull request or an issue.
 
 ---
 
-**Creado por [@dcsalg](https://github.com/dcsalg)** — impulsado por la necesidad de automatización simple en proyectos ESP32.
+**Created by [@dcsalg](https://github.com/ayresnet)** — driven by the need for simple automation in ESP32 projects.
+
+---
+
+📄 Prefer to read this in **Spanish**? Check out [README.es.md](README.es.md)
+
+
