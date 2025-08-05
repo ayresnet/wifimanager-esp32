@@ -1,6 +1,14 @@
-# WiFiManager ESP32
+# AyresWiFiManager – ESP32 WiFi Manager con portal cautivo
 
-**WiFiManager ESP32** es una librería para gestión automática de WiFi en dispositivos ESP32, diseñada para facilitar la conexión y configuración en entornos IoT. De uso libre y orientado a quienes buscan simplicidad y autonomía en sus proyectos.
+<p align="center">
+  <img src="https://res.cloudinary.com/dxunooptp/image/upload/v1754425162/Screenshot_20250805-165306_Acceso_a_portal_cautivo_wzrqwd.png" alt="Portal cautivo en ESP32" height="500">
+</p>
+
+**AyresWiFiManager** es una librería para ESP32 que permite configurar redes WiFi y parámetros personalizados a través de un portal web cautivo, ideal para entornos IoT como alarmas, automatización o domótica.
+
+> Compatible con **PlatformIO** y **Arduino IDE**.  
+> Código libre, modular y fácil de integrar en cualquier proyecto.
+
 
 ## 📂 Estructura del proyecto
 
@@ -21,48 +29,124 @@
 └── README.md
 ```
 
-## 🚀 Características principales
+---
 
-- Escaneo y conexión automática a redes conocidas  
-- Portal cautivo con páginas de respuesta personalizadas (`success.html`, `error.html`)  
-- Integración sencilla en proyectos con PlatformIO  
-- Código modular y fácil de mantener
+## 🧩 Características principales
 
-## 🛠 Instrucciones de uso
+- 🔌 Conexión automática a redes WiFi conocidas
+- 🌐 Portal cautivo cuando no hay red guardada
+- 💾 Archivos web servidos desde LittleFS
+- ⚙️ Soporte para parámetros personalizados (ej. MQTT, tokens, etc.)
+- 🧰 Compatible con PlatformIO y Arduino IDE
+- 📲 Ideal para sistemas sin pantalla (headless setup)
 
-1. **Instalar dependencias**: Asegurate de tener PlatformIO y ESP32 configurado.
-2. **Agregar la librería**: Copiá `wifimanager.cpp` y `wifimanager.h` dentro de `lib/wifimanager/`.
-3. **Interfaz web**: Colocá los archivos `index.html`, `success.html` y `error.html` en `data/wifimanager/`.
-4. **Cargar archivos a la SPIFFS**:
+---
 
+## 🗂️ Estructura del proyecto
+
+```plaintext
+/wifimanager-esp32
+├── src/
+│   ├── WifiManager.cpp
+│   └── WifiManager.h
+├── data/
+│   └── wifimanager/
+│       ├── index.html
+│       ├── style.css
+│       └── script.js
+├── examples/
+│   ├── ejemplo_basico/
+│   │   └── ejemplo_basico.ino
+│   └── ejemplo_platformio/
+│       └── ejemplo.cpp
+├── library.json
+├── library.properties
+├── README.md
+└── LICENSE
+```
+
+---
+
+## 🛠️ Instalación
+
+### 🔷 PlatformIO
+
+1. Agregá esta línea en `platformio.ini`:
+   ```ini
+   lib_deps = https://github.com/ayresnet/wifimanager-esp32
+   ```
+
+2. Subí los archivos web (desde `/data`) a la memoria del ESP32:
    ```bash
    pio run --target uploadfs
    ```
 
-5. **Compilar y flashear el código**:
-
+3. Flasheá tu código:
    ```bash
    pio run --target upload
    ```
 
-6. **Monitoreo en serie**:
+---
 
-   ```bash
-   pio device monitor
+### 🟢 Arduino IDE
+
+1. Descargá este repo como ZIP y agregalo desde:  
+   `Sketch → Include Library → Add .ZIP Library`.
+
+2. Instalá el plugin **ESP32 Sketch Data Upload** para subir los archivos del portal web.
+
+3. Colocá los HTML en:
+   ```
+   /data/wifimanager/
    ```
 
-## 📄 Licencia
+4. Subilos desde `Tools → ESP32 Sketch Data Upload`
 
-Este proyecto se publica bajo licencia MIT — libertad total para copiar, modificar y distribuir, incluso comercialmente.
+---
+
+## 🧪 Ejemplo básico
+
+```cpp
+#include <WifiManager.h>
+
+WifiManager wifiManager;
+
+void setup() {
+  Serial.begin(115200);
+  wifiManager.setHtmlPathPrefix("/wifimanager/");
+  wifiManager.autoConnect("AyresIoT-Setup");
+  Serial.println("✅ Conectado a WiFi!");
+}
+
+void loop() {
+  // Tu lógica principal
+}
+```
+
+---
+
+## 🌐 Vista previa del portal
+
+<p align="center">
+  <img src="https://res.cloudinary.com/dxunooptp/image/upload/v1754425162/Screenshot_20250805-165306_Acceso_a_portal_cautivo_wzrqwd.png" alt="Portal cautivo en ESP32" height="500">
+</p>
+---
+
+## 📝 Licencia
+
+Este proyecto está licenciado bajo la **MIT License** – podés usarlo, modificarlo y distribuirlo libremente incluso con fines comerciales.
+
+---
 
 ## 🤝 Contribuciones
 
-¡Bienvenidas! Si querés sumar mejoras, ejemplos o documentación, podés abrir un *pull request* o dejar un *issue*.
+¡Son bienvenidas!  
+Podés abrir un [Issue](https://github.com/ayresnet/wifimanager-esp32/issues) o un Pull Request si querés mejorar algo, agregar ejemplos o reportar errores.
 
 ---
 
-**Creado por [@dcsalg](https://github.com/ayresnet)** — impulsado por la necesidad de automatización simple en proyectos ESP32.
+📄 Preferís leer esto en **inglés**? Visitá [README_en.md](README_en.md)
 
 ---
 
-📄 Preferís leer esto en **inglés**? Visitá [README.md](README.md)
+**Creado por [Daniel Cristian Salgado](https://ayresnet.com) – AyresNet.**
